@@ -19,8 +19,8 @@ extern int page1, idx;
 extern unsigned long int tscreensave;
 extern Activity newActivity;
 extern uint16_t year;
-
-#define screensave_time 20000
+extern double lat, lng;
+extern unsigned long int button_hold_time, light_on_time, screensave_time;
 
 void u8g2_prepare() {
   // Setup function: defines text mode and color 
@@ -74,10 +74,10 @@ void draw_buttons(char b, long int d, const String left, const String right){
 
   // Fill boxes based on 'b' and 'd' values
   if (b == HOLD_L) {
-    int fillWidth = map(d, 0, 1000, 0, boxWidth - 2);
+    int fillWidth = map(d, 0, button_hold_time, 0, boxWidth - 2);
     u8g2.drawBox(leftBoxX + 1, boxY + 1, fillWidth, boxHeight - 2);
   } else if (b == HOLD_R) {
-    int fillWidth = map(d, 0, 1000, 0, boxWidth - 2);
+    int fillWidth = map(d, 0, button_hold_time, 0, boxWidth - 2);
     u8g2.drawBox(rightBoxX + 1, boxY + 1, fillWidth, boxHeight - 2);
   }
   u8g2.setFontMode(1);
@@ -275,10 +275,84 @@ void draw_page(int page1, int idx, char button, long int duration){
     if (newActivity.started == false) draw_buttons(button, duration, BACK, START);
     else draw_buttons(button, duration, BACK, PAUSE);
   }
+  // ---------------------------- debug pages----------------------------
   if (page1 == PageState::DEBUG){
     
-    String menuItems[] = {"GPS DATA", "INPUTS", "SCREEN"};
-    draw_selection_list(menuItems, 3, idx);
+    String menuItems[] = {"GPS DATA", "INPUTS", "SCREEN", "RTC"};
+    draw_selection_list(menuItems, 4, idx);
+    draw_buttons(button, duration, BACK, SELECT);
+  }
+  
+  if (page1 == PageState::DEBUG_GPS){
+    u8g2.setFont(u8g2_font_6x10_tf);
+    u8g2.setCursor(0, 20);
+    u8g2.print(F("GPS Data:"));
+
+    u8g2.drawFrame(0, 30, 120, 70);
+    u8g2.drawHLine(0, 45, 120);
+    u8g2.drawVLine(60, 30, 60);
+
+    u8g2.setCursor(5, 32);
+    u8g2.print(F("Speed"));
+    u8g2.setCursor(65, 32);
+    u8g2.print(speed, 2);
+
+    u8g2.setCursor(5, 47);
+    u8g2.print(F("Lat"));
+    u8g2.setCursor(65, 47);
+    u8g2.print(lat, 2);
+
+    u8g2.setCursor(5, 62);
+    u8g2.print(F("Lon"));
+    u8g2.setCursor(65, 62);
+    u8g2.print(lng, 2);
+
+    u8g2.setCursor(5, 77);
+    u8g2.print(F("Sats"));
+    u8g2.setCursor(65, 77);
+    u8g2.print(satellites);
+
+    draw_buttons(button, duration, BACK, SELECT);
+  }
+  if (page1 == PageState::DEBUG_INPUTS){
+    u8g2.setFont(u8g2_font_6x10_tf);
+    u8g2.setCursor(0, 15);
+    u8g2.print(F("Inputs:"));
+
+    u8g2.drawFrame(0, 30, 120, 70);
+    u8g2.drawHLine(0, 45, 120);
+    u8g2.drawVLine(60, 30, 60);
+
+    u8g2.setCursor(5, 32);
+    u8g2.print(F("Hold"));
+    u8g2.setCursor(65, 32);
+    u8g2.print(button_hold_time);
+
+    draw_buttons(button, duration, BACK, SELECT);
+  }
+  if (page1 == PageState::DEBUG_SCREEN){
+
+    u8g2.setFont(u8g2_font_6x10_tf);
+    u8g2.setCursor(0, 15);
+    u8g2.print(F("Screen:"));
+
+    u8g2.drawFrame(0, 30, 120, 70);
+    u8g2.drawHLine(0, 45, 120);
+    u8g2.drawVLine(60, 30, 60);
+
+    u8g2.setCursor(5, 32);
+    u8g2.print(F("Light"));
+    u8g2.setCursor(65, 32);
+    u8g2.print(light_on_time);
+
+    u8g2.setCursor(5, 47);
+    u8g2.print(F("Screensaver"));
+    u8g2.setCursor(65, 47);
+    u8g2.print(screensave_time);
+    
+    draw_buttons(button, duration, BACK, SELECT);
+  }
+  if (page1 == PageState::DEBUG_RTC){
     draw_buttons(button, duration, BACK, SELECT);
   }
 
@@ -293,6 +367,7 @@ void draw_page(int page1, int idx, char button, long int duration){
     draw_buttons(button, duration, BACK, SELECT);
   }
 }
+
 
 /**
  * Draws the main display content, including information and the current page.

@@ -15,6 +15,7 @@ extern double speed;
 extern int satellites;
 extern RTCZero rtc;
 extern Activity newActivity;
+extern double lat, lng;
 
 void tracking(){
   while (GPSSerial.available() > 0) {
@@ -29,6 +30,9 @@ void tracking(){
       year = gps.date.year();
       month = gps.date.month();
       day = gps.date.day();
+
+      lat = gps.location.lat();
+      lng = gps.location.lng();
 
       // Update rtc
       rtc.setHours(hour);

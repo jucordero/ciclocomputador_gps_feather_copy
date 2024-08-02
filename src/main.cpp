@@ -31,6 +31,7 @@ TinyGPSPlus gps;
 double speed;
 int age;
 int satellites;
+double lat, lng;
 
 // Activity
 Activity newActivity;
@@ -40,6 +41,7 @@ U8G2_UC1608_ERC240120_F_4W_HW_SPI u8g2(U8G2_R3, /* cs=*/ 10, /* dc=*/ 12, /* res
 int page1 = 1;
 int idx = 0;
 unsigned long int timer, tlight, tscreensave;
+unsigned long int light_on_time = 10000, screensave_time = 20000;
 int i_array = 0;
 #define backlight_pin 13
 
@@ -51,6 +53,8 @@ Bounce debouncerL = Bounce();
 button_status button_pressed = button_status{'n', 0};
 boolean Lready = true;
 boolean Rready = true;
+unsigned long int button_hold_time = 1000;
+
 
 void setup(void) {
   // Begin serial comunication with host and gps

@@ -1,11 +1,10 @@
 #include <Arduino.h>
 #include <utils.h>
 
-#define button_hold_time 1000
 #define light_pin 13
-#define light_on_time 10000
+extern unsigned long int light_on_time;
 
-extern unsigned long int tlight, tscreensave;
+extern unsigned long int tlight, tscreensave, button_hold_time;
 
 void light(){
   if (millis() - tlight > light_on_time) digitalWrite(light_pin, LOW);
@@ -19,7 +18,7 @@ button_status buttons(Bounce& L, Bounce& R, boolean& Lready, boolean& Rready){
     // which would have created a copy and hence any modifications not being made visible during the operation of this function.
   R.update();
   L.update();
-  long int duration;
+  unsigned long duration;
 
   if (R.read() == LOW && Rready == true){
     tlight = millis();

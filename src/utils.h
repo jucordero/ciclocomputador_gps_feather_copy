@@ -21,20 +21,18 @@ std::map<int, const String> months_dict = {
 };
 
 std::map<int, const String> days_dict = {    
-    { 0, "Monday" },
-    { 1, "Tuesday" },
-    { 2, "Wednesday" },
-    { 3, "Thursday" },
-    { 4, "Friday" },
-    { 5, "Saturday" },
-    { 6, "Sunday" },
+    { 1, "Sunday" },
+    { 2, "Monday" },
+    { 3, "Tuesday" },
+    { 4, "Wednesday" },
+    { 5, "Thursday" },
+    { 6, "Friday" },
+    { 7, "Saturday" }
 };
-
-
 
 struct button_status{
     char button;
-    long int duration;
+    unsigned long int duration;
 };
 
 enum PageState {
@@ -43,7 +41,11 @@ enum PageState {
     NEW_ACTIVITY=11,
     HISTORY=22,
     OPTIONS=33,
-    DEBUG=44
+    DEBUG=44,
+    DEBUG_GPS=440,
+    DEBUG_INPUTS=441,
+    DEBUG_SCREEN=442,
+    DEBUG_RTC=443
 };
 
 const String BACK = "BACK";

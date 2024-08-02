@@ -10,7 +10,7 @@
 #define GPSSerial Serial1
 
 extern RTCZero rtc;
-extern unsigned long int start_time;
+extern unsigned long int start_time, screensave_time;
 
 extern int page1;
 extern int idx;
@@ -116,15 +116,81 @@ void actions(char b){
 
     case PageState::DEBUG:
       if (b == BUTTON_RIGHT) {
-        idx = cycle_up(idx, 0, 3);
+        idx = cycle_up(idx, 0, 4);
       }
       if (b == BUTTON_LEFT) {
-        idx = cycle_down(idx, 0, 3);
+        idx = cycle_down(idx, 0, 4);
+      }
+      if (b == BUTTON_SELECT) {
+        switch(idx){
+          case 0:
+            page1 = PageState::DEBUG_GPS;
+            idx = 0;
+            break;
+          case 1:
+            page1 = PageState::DEBUG_INPUTS;
+            idx = 0;
+            break;
+          case 2:
+            page1 = PageState::DEBUG_SCREEN;
+            idx = 0;
+            break;
+          case 3:
+            page1 = PageState::DEBUG_RTC;
+            idx = 0;
+            break;
+        }
+      }
+      if (b == BUTTON_BACK) {
+        page1 = PageState::MAIN_MENU;
+        idx=3;
+      }
+      break;
+    case PageState::DEBUG_GPS:
+      if (b == BUTTON_RIGHT) {
+      }
+      if (b == BUTTON_LEFT) {
       }
       if (b == BUTTON_SELECT) {
       }
       if (b == BUTTON_BACK) {
-        page1 = PageState::MAIN_MENU;
+        page1 = PageState::DEBUG;
+        idx=0;
+      }
+      break;
+    case PageState::DEBUG_INPUTS:
+      if (b == BUTTON_RIGHT) {
+      }
+      if (b == BUTTON_LEFT) {
+      }
+      if (b == BUTTON_SELECT) {
+      }
+      if (b == BUTTON_BACK) {
+        page1 = PageState::DEBUG;
+        idx=1;
+      }
+      break;
+    case PageState::DEBUG_SCREEN:
+      if (b == BUTTON_RIGHT) {
+      }
+      if (b == BUTTON_LEFT) {
+      }
+      if (b == BUTTON_SELECT) {
+      }
+      if (b == BUTTON_BACK) {
+        page1 = PageState::DEBUG;
+        idx=2;
+      }
+      break;
+    case PageState::DEBUG_RTC:
+      if (b == BUTTON_RIGHT) {
+      }
+      if (b == BUTTON_LEFT) {
+      }
+      if (b == BUTTON_SELECT) {
+      }
+      if (b == BUTTON_BACK) {
+        page1 = PageState::DEBUG;
         idx=3;
       }
       break;
